@@ -12,6 +12,7 @@ import yt_dlp
 from typing import Any
 from discord.ui import View, button
 import functools
+import base64
 
 # LOAD ENV VARIABLES
 load_dotenv()
@@ -113,18 +114,36 @@ class HelpView(View):
 async def get_audio_url(query):
     loop = asyncio.get_event_loop()
 
+    # 1. Handle Cookies from Environment Variable
+    cookie_content = os.getenv("YOUTUBE_COOKIES")
+    cookie_path = None
+
+    if cookie_content:
+        try:
+            # Decode the base64 string
+            decoded_cookies = base64.b64decode(cookie_content).decode('utf-8')
+            # Write to a temporary file for yt-dlp to read
+            cookie_path = 'cookies.txt'
+            with open(cookie_path, 'w', encoding='utf-8') as f:
+                f.write(decoded_cookies)
+        except Exception as e:
+            print(f"Cookie decoding failed: {e}")
+
     def extract():
-        with yt_dlp.YoutubeDL(YDL_OPTIONS) as ydl: # type:ignore
-            # If not a URL → treat as search
+        # Create a local copy of options to add the cookie file path
+        opts = YDL_OPTIONS.copy()
+        if cookie_path:
+            opts['cookiefile'] = cookie_path
+
+        with yt_dlp.YoutubeDL(opts) as ydl:
             if not query.startswith("http"):
                 info = ydl.extract_info(f"ytsearch:{query}", download=False)
-                return info['entries'][0] # type:ignore
+                return info['entries']
             else:
                 return ydl.extract_info(query, download=False)
 
     data = await loop.run_in_executor(None, extract)
-
-    return data['url'], data.get('title', 'Unknown Title') # type:ignore
+    return data['url'], data.get('title', 'Unknown Title')
 
 # ---------------- AI ----------------
 
