@@ -107,7 +107,7 @@ class MyBot(commands.Bot):
             password=os.getenv('WAVELINK_PASSWORD')
         )
 
-        await wavelink.Pool.connect(nodes=[node], client=self, cache_capacity=100)
+        # await wavelink.Pool.connect(nodes=[node], client=self, cache_capacity=100)
 
 bot = MyBot(command_prefix="!", intents=intents, help_command=None)
 
