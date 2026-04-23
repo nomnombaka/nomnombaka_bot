@@ -1,8 +1,8 @@
 discord.py
-yt-dlp
 pynacl
 gtts
 feedparser
 google-genai
 davey
 python-dotenv
+wavelink
