@@ -5,3 +5,4 @@ gtts
 feedparser
 google-genai
 davey
+python-dotenv
