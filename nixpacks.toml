@@ -1,2 +1,15 @@
 [phases.setup]
-nixPkgs = ["ffmpeg"]
+nixPkgs = ["python313", "ffmpeg"]
+
+[phases.install]
+cmds = ["python -m venv /opt/venv && /opt/venv/bin/pip install --upgrade pip && /opt/venv/bin/pip install -r requirements.txt"]
+
+[phases.build]
+cmds = ["echo 'Environment ready for Python 3.13'"]
+
+[start]
+cmd = "/opt/venv/bin/python bot.py"
+
+[variables]
+PYTHONUNBUFFERED = 
+"1"
