@@ -105,7 +105,7 @@ class HelpView(View):
 class MyBot(commands.Bot):
     async def setup_hook(self):
         node = wavelink.Node(
-            uri="http://lovely-truth.railway.internal:2333",
+            uri="http://lavalink-server.railway.internal:2333",
             password=os.getenv('WAVELINK_PASSWORD')
         )
 
