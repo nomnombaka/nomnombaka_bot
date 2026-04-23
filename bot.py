@@ -305,10 +305,10 @@ async def purge(ctx, amount: int):
 @commands.has_permissions(manage_nicknames=True)
 async def change_nickname(ctx, nickname, member : discord.Member):
         if member == ctx.author:
-            return await ctx.send("You can't ban yourself 💀")
+            return await ctx.send("You can't change your nickname yourself 💀")
 
         if member.top_role >= ctx.guild.me.top_role:
-            return await ctx.send("I can't ban this user.")
+            return await ctx.send("I can't change nickname of this user.")
 
         if member.top_role >= ctx.author.top_role:
             return await ctx.send("You can't moderate this user.")
@@ -323,10 +323,10 @@ async def change_nickname(ctx, nickname, member : discord.Member):
 @commands.has_permissions(manage_nicknames=True)
 async def reset_nickname(ctx, member : discord.Member):
         if member == ctx.author:
-            return await ctx.send("You can't ban yourself 💀")
+            return await ctx.send("You can't reset your nickname yourself 💀")
 
         if member.top_role >= ctx.guild.me.top_role:
-            return await ctx.send("I can't ban this user.")
+            return await ctx.send("I can't reset nickname of this user.")
 
         if member.top_role >= ctx.author.top_role:
             return await ctx.send("You can't moderate this user.")
@@ -400,7 +400,7 @@ async def unban(ctx, *, user):
 async def send_dm(ctx, user: discord.User, *, message: str):
     try:
         await user.send(message)
-        await ctx.send("DM sent!")
+        await ctx.send(f"DM sent to {user.mention}!")
     except Exception as e:
         await ctx.send(f"Error: {e}")
 
